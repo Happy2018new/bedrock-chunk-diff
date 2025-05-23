@@ -1,6 +1,5 @@
 import ctypes
 import struct
-from .load_dynamic_library import LIB
 
 CPtr = ctypes.c_void_p
 CSlice = CPtr
@@ -8,7 +7,7 @@ CString = CPtr
 CInt = ctypes.c_int
 CLongLong = ctypes.c_longlong
 
-
+LIB = ctypes.cdll.LoadLibrary("./test_c_api.so")
 LIB.FreeMemory.argtypes = [CPtr]
 LIB.FreeMemory.restype = None
 

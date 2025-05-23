@@ -1,14 +1,24 @@
 package main
 
+/*
+#include <stdio.h>
+#include <stdlib.h>
+*/
 import "C"
 import (
 	"fmt"
+	"unsafe"
 
 	"github.com/TriM-Organization/bedrock-chunk-diff/timeline"
 	"go.etcd.io/bbolt"
 )
 
 func main() {}
+
+//export FreeMemory
+func FreeMemory(address unsafe.Pointer) {
+	C.free(address)
+}
 
 //export DO
 func DO() {
