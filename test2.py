@@ -52,6 +52,7 @@
 # print("OK2")
 
 import time
+import bedrockworldoperator as bwo
 from python.package.internal.symbol_export_timeline_db import new_timeline_db
 
 print(new_timeline_db("why", False, False))
