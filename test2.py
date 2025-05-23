@@ -42,11 +42,11 @@ LIB.DO2.argtypes = []
 LIB.DO.restype = None
 LIB.DO2.restype = None
 
-LIB.DO3.argtypes = [CString]
-LIB.DO3.restype = CLongLong
+LIB.NewTimelineDB.argtypes = [CString, CInt, CInt]
+LIB.NewTimelineDB.restype = CLongLong
 
 # LIB.DO()
 # print("OK")
 
-print(int(LIB.DO3(as_c_string("ssss"))))
+print(int(LIB.NewTimelineDB(as_c_string("ssss"), CInt(False), CInt(False))))
 print("OK2")
