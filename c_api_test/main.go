@@ -41,3 +41,17 @@ func DO2() {
 		return
 	}
 }
+
+//export DO3
+func DO3(path *C.char) {
+	tldb, err := timeline.Open(C.GoString(path), false, false)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	err = tldb.CloseTimelineDB()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+}
