@@ -17,5 +17,6 @@ LIB2.DO.argtypes = []
 LIB2.DO.restype = None
 
 LIB1.DO()
+LIB2.DO()
 time.sleep(1)
 print("OK")
