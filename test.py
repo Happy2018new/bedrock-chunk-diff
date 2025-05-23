@@ -12,13 +12,13 @@ for index, value in enumerate(c.sub()):
 
 db = bcd.new_timeline_database("ss")
 print(db.is_valid())
-
-tl = db.new_chunk_timeline(bcd.ChunkPos(0, 1))
-print(tl.is_valid())
-print(tl.all_time_point())
-
-tl.append_disk_chunk(bcd.ChunkData(sub_paylods, []))
-print(tl.all_time_point())
-tl.save()
-
 db.close_timeline_db()
+# tl = db.new_chunk_timeline(bcd.ChunkPos(0, 1))
+# print(tl.is_valid())
+# print(tl.all_time_point())
+
+# tl.append_disk_chunk(bcd.ChunkData(sub_paylods, []))
+# print(tl.all_time_point())
+# tl.save()
+
+# db.close_timeline_db()
