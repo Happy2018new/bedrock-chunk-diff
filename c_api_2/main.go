@@ -1,9 +1,12 @@
 package main
 
+import "C"
 import (
 	"runtime"
 	"time"
 )
+
+func main() {}
 
 //export DO
 func DO() {
