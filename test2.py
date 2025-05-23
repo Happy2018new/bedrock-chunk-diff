@@ -43,10 +43,10 @@ LIB.DO.restype = None
 LIB.DO2.restype = None
 
 LIB.DO3.argtypes = [CString]
-LIB.DO3.restype = None
+LIB.DO3.restype = CLongLong
 
 # LIB.DO()
 # print("OK")
 
-LIB.DO3(as_c_string("ssss"))
+print(int(LIB.DO3(as_c_string("ssss"))))
 print("OK2")

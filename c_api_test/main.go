@@ -13,6 +13,8 @@ import (
 	"go.etcd.io/bbolt"
 )
 
+var savedTimelineDB = NewSimpleManager[timeline.TimelineDatabase]()
+
 func main() {}
 
 //export FreeMemory
@@ -53,15 +55,16 @@ func DO2() {
 }
 
 //export DO3
-func DO3(path *C.char) {
+func DO3(path *C.char) C.longlong {
 	tldb, err := timeline.Open(C.GoString(path), false, false)
 	if err != nil {
 		fmt.Println(err)
-		return
+		return -1
 	}
 	err = tldb.CloseTimelineDB()
 	if err != nil {
 		fmt.Println(err)
-		return
+		return -1
 	}
+	return C.longlong(savedTimelineDB.AddObject(tldb))
 }
