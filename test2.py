@@ -7,7 +7,7 @@ CString = CPtr
 CInt = ctypes.c_int
 CLongLong = ctypes.c_longlong
 
-LIB = ctypes.cdll.LoadLibrary("./test_c_api.so")
+LIB = ctypes.cdll.LoadLibrary("./c_api_test.so")
 LIB.FreeMemory.argtypes = [CPtr]
 LIB.FreeMemory.restype = None
 
@@ -36,8 +36,6 @@ def as_python_string(c_string: CString) -> str:
     free_memory(c_string)
     return result
 
-
-LIB = ctypes.cdll.LoadLibrary("./c_api_test.so")
 
 LIB.DO.argtypes = []
 LIB.DO2.argtypes = []
