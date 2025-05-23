@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from bedrockworldoperator import Range, RANGE_OVERWORLD
 
 
 @dataclass
@@ -37,4 +36,4 @@ class ChunkData:
 
     sub_chunks: list[bytes] = field(default_factory=lambda: [])
     nbts: list[bytes] = field(default_factory=lambda: [])
-    chunk_range: Range = RANGE_OVERWORLD
+    chunk_range: int = 0
