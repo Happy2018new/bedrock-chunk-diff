@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from .chunk_timeline import ChunkTimeline
 from ..internal.symbol_export_timeline_db import (
     new_timeline_db,
     release_timeline_db,
