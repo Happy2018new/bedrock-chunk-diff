@@ -4,6 +4,10 @@ from ..internal.symbol_export_timeline_db import (
     new_timeline_db,
     release_timeline_db,
     tldb_close_timeline_db,
+    tldb_delete_chunk_timeline,
+    tldb_load_latest_time_point_unix_time,
+    tldb_new_chunk_timeline,
+    tldb_save_latest_time_point_unix_time,
 )
 
 

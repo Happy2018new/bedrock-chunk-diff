@@ -1,6 +1,5 @@
 import numpy
 from dataclasses import dataclass
-from bedrockworldoperator import Range
 from .define import ChunkData
 from ..internal.symbol_export_timeline_db import release_chunk_timeline
 from ..internal.symbol_export_chunk_timeline import (
@@ -70,84 +69,83 @@ class ChunkTimeline:
         """
         return self._chunk_timeline_id >= 0
 
-    def append_disk_chunk(
-        self, chunk_data: ChunkData, nop_when_no_change: bool = False
-    ):
-        """
-        append_disk_chunk tries append a new chunk whose is disk
-        encoding to the timeline of current chunk. Additionally,
-        we will also append the block entities of this chunk.
+    # def append_disk_chunk(
+    #     self, chunk_data: ChunkData, nop_when_no_change: bool = False
+    # ):
+    #     """
+    #     append_disk_chunk tries append a new chunk whose is disk
+    #     encoding to the timeline of current chunk. Additionally,
+    #     we will also append the block entities of this chunk.
 
-        Calling append_disk_chunk will make sure there is exist at
-        least one empty space to place the new time point, whether
-        new time point will be added in the end or not.
+    #     Calling append_disk_chunk will make sure there is exist at
+    #     least one empty space to place the new time point, whether
+    #     new time point will be added in the end or not.
 
-        The way to leave empty space is by calling pop, and the poped
-        time points must be the most earliest one.
+    #     The way to leave empty space is by calling pop, and the poped
+    #     time points must be the most earliest one.
 
-        If current timeline is read only, then calling append_disk_chunk
-        will do no operation.
+    #     If current timeline is read only, then calling append_disk_chunk
+    #     will do no operation.
 
-        Args:
-            chunk_data (ChunkData): The chunk you want to append to the timeline.
-            nop_when_no_change (bool, optional):
-                Specific if the append one have no difference between the latest one,
-                then don't append anything to the current chunk timeline.
-                Defaults to False.
+    #     Args:
+    #         chunk_data (ChunkData): The chunk you want to append to the timeline.
+    #         nop_when_no_change (bool, optional):
+    #             Specific if the append one have no difference between the latest one,
+    #             then don't append anything to the current chunk timeline.
+    #             Defaults to False.
 
+    #     Raises:
+    #         Exception: When failed to append the chunk.
+    #     """
+    #     err = ctl_append_disk_chunk(
+    #         self._chunk_timeline_id,
+    #         chunk_data.sub_chunks,
+    #         chunk_data.nbts,
+    #         # chunk_data.chunk_range.start_range,
+    #         # chunk_data.chunk_range.end_range,
+    #         nop_when_no_change,
+    #     )
+    #     if len(err) > 0:
+    #         raise Exception(err)
 
-        Raises:
-            Exception: When failed to append the chunk.
-        """
-        err = ctl_append_disk_chunk(
-            self._chunk_timeline_id,
-            chunk_data.sub_chunks,
-            chunk_data.nbts,
-            chunk_data.chunk_range.start_range,
-            chunk_data.chunk_range.end_range,
-            nop_when_no_change,
-        )
-        if len(err) > 0:
-            raise Exception(err)
+    # def append_network_chunk(
+    #     self, chunk_data: ChunkData, nop_when_no_change: bool = False
+    # ):
+    #     """
+    #     append_network_chunk tries append a new chunk whose is network
+    #     encoding to the timeline of current chunk.
+    #     Additionally, we will also append the block entities of this chunk.
 
-    def append_network_chunk(
-        self, chunk_data: ChunkData, nop_when_no_change: bool = False
-    ):
-        """
-        append_network_chunk tries append a new chunk whose is network
-        encoding to the timeline of current chunk.
-        Additionally, we will also append the block entities of this chunk.
+    #     Calling append_network_chunk will make sure there is exist at least
+    #     one empty space to place the new time point, whether new time point
+    #     will be added in the end or not.
 
-        Calling append_network_chunk will make sure there is exist at least
-        one empty space to place the new time point, whether new time point
-        will be added in the end or not.
+    #     The way to leave empty space is by calling pop, and the poped time
+    #     points must be the most earliest one.
 
-        The way to leave empty space is by calling pop, and the poped time
-        points must be the most earliest one.
+    #     If current timeline is read only, then calling append_network_chunk
+    #     will do no operation.
 
-        If current timeline is read only, then calling append_network_chunk
-        will do no operation.
+    #     Args:
+    #         chunk_data (ChunkData): The chunk you want to append to the timeline.
+    #         nop_when_no_change (bool, optional):
+    #             Specific if the append one have no difference between the latest one,
+    #             then don't append anything to the current chunk timeline.
+    #             Defaults to False.
 
-        Args:
-            chunk_data (ChunkData): The chunk you want to append to the timeline.
-            nop_when_no_change (bool, optional):
-                Specific if the append one have no difference between the latest one,
-                then don't append anything to the current chunk timeline.
-                Defaults to False.
-
-        Raises:
-            Exception: When failed to append the chunk.
-        """
-        err = ctl_append_network_chunk(
-            self._chunk_timeline_id,
-            chunk_data.sub_chunks,
-            chunk_data.nbts,
-            chunk_data.chunk_range.start_range,
-            chunk_data.chunk_range.end_range,
-            nop_when_no_change,
-        )
-        if len(err) > 0:
-            raise Exception(err)
+    #     Raises:
+    #         Exception: When failed to append the chunk.
+    #     """
+    #     err = ctl_append_network_chunk(
+    #         self._chunk_timeline_id,
+    #         chunk_data.sub_chunks,
+    #         chunk_data.nbts,
+    #         chunk_data.chunk_range.start_range,
+    #         chunk_data.chunk_range.end_range,
+    #         nop_when_no_change,
+    #     )
+    #     if len(err) > 0:
+    #         raise Exception(err)
 
     def empty(self) -> bool:
         """
@@ -459,9 +457,10 @@ class ChunkTimeline:
         )
         if not success:
             return None
-        return ChunkData(
-            sub_chunks, nbts, Range(range_start, range_end)
-        ), update_unix_time
+        return (
+            ChunkData(sub_chunks, nbts, Range(range_start, range_end)),
+            update_unix_time,
+        )
 
     def last_network_chunk(self) -> tuple[ChunkData, int] | None:
         """
@@ -482,9 +481,10 @@ class ChunkTimeline:
         )
         if not success:
             return None
-        return ChunkData(
-            sub_chunks, nbts, Range(range_start, range_end)
-        ), update_unix_time
+        return (
+            ChunkData(sub_chunks, nbts, Range(range_start, range_end)),
+            update_unix_time,
+        )
 
     def pop(self):
         """
