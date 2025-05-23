@@ -1,5 +1,3 @@
-from bedrockworldoperator import Dimension, ChunkPos
-from bedrockworldoperator import DIMENSION_OVERWORLD
 from dataclasses import dataclass
 from .chunk_timeline import ChunkTimeline
 from ..internal.symbol_export_timeline_db import (
@@ -55,117 +53,117 @@ class TimelineDatabase:
         if len(err) > 0:
             raise Exception(err)
 
-    def new_chunk_timeline(
-        self,
-        pos: ChunkPos,
-        read_only: bool = False,
-        dm: Dimension = DIMENSION_OVERWORLD,
-    ) -> ChunkTimeline:
-        """
-        new_chunk_timeline gets the timeline of a chunk who is at pos.
-        If current timeline database is not exist or meet error, the you get a invalid ChunkTimeline.
-        Therefore, you need use ChunkTimeline.is_valid() to check whether the timeline you get is valid or not.
+    # def new_chunk_timeline(
+    #     self,
+    #     pos: ChunkPos,
+    #     read_only: bool = False,
+    #     dm: Dimension = DIMENSION_OVERWORLD,
+    # ) -> ChunkTimeline:
+    #     """
+    #     new_chunk_timeline gets the timeline of a chunk who is at pos.
+    #     If current timeline database is not exist or meet error, the you get a invalid ChunkTimeline.
+    #     Therefore, you need use ChunkTimeline.is_valid() to check whether the timeline you get is valid or not.
 
-        Note that if timeline of current chunk is not exist, then we will not create a timeline
-        but return an empty one so you can modify it. The time to create the timeline is only when you
-        save a timeline that not empty to the database.
+    #     Note that if timeline of current chunk is not exist, then we will not create a timeline
+    #     but return an empty one so you can modify it. The time to create the timeline is only when you
+    #     save a timeline that not empty to the database.
 
-        If read_only is true, then returned a timeline but only can read.
-        For a read only timeline, you also need use ChunkTimeline.save to release it.
+    #     If read_only is true, then returned a timeline but only can read.
+    #     For a read only timeline, you also need use ChunkTimeline.save to release it.
 
-        Important:
-            - Once any modifications have been made to the returned timeline, you must save them
-              at the end; otherwise, the timeline will not be able to maintain data consistency
-              (only need to save at the last modification).
+    #     Important:
+    #         - Once any modifications have been made to the returned timeline, you must save them
+    #           at the end; otherwise, the timeline will not be able to maintain data consistency
+    #           (only need to save at the last modification).
 
-            - Timeline of one chunk can't be using by multiple threads. Therefore, you will
-              get blocking when a thread calling new_chunk_timeline but there is still some
-              threads are using target chunk.
+    #         - Timeline of one chunk can't be using by multiple threads. Therefore, you will
+    #           get blocking when a thread calling new_chunk_timeline but there is still some
+    #           threads are using target chunk.
 
-            - Calling ChunkTimeline.save to release the timeline.
+    #         - Calling ChunkTimeline.save to release the timeline.
 
-            - Returned ChunkTimeline can't shared with multiple threads, and it's your responsibility
-              to ensure this thing.
+    #         - Returned ChunkTimeline can't shared with multiple threads, and it's your responsibility
+    #           to ensure this thing.
 
-        Args:
-            pos (ChunkPos): The chunk position of the target chunk.
-            read_only (bool, optional): You want to the target timeline is read only or not.
-                                        Defaults to False.
-            dm (Dimension, optional): The dimension of the target chunk.
-                                      Defaults to DIMENSION_OVERWORLD.
-        """
-        return ChunkTimeline(
-            tldb_new_chunk_timeline(self._database_id, int(dm), pos.x, pos.z, read_only)
-        )
+    #     Args:
+    #         pos (ChunkPos): The chunk position of the target chunk.
+    #         read_only (bool, optional): You want to the target timeline is read only or not.
+    #                                     Defaults to False.
+    #         dm (Dimension, optional): The dimension of the target chunk.
+    #                                   Defaults to DIMENSION_OVERWORLD.
+    #     """
+    #     return ChunkTimeline(
+    #         tldb_new_chunk_timeline(self._database_id, int(dm), pos.x, pos.z, read_only)
+    #     )
 
-    def delete_chunk_timeline(self, pos: ChunkPos, dm: Dimension = DIMENSION_OVERWORLD):
-        """
-        delete_chunk_timeline deletes the timeline of chunk who at pos.
-        If timeline is not exist, then do no operation.
+    # def delete_chunk_timeline(self, pos: ChunkPos, dm: Dimension = DIMENSION_OVERWORLD):
+    #     """
+    #     delete_chunk_timeline deletes the timeline of chunk who at pos.
+    #     If timeline is not exist, then do no operation.
 
-        Time complexity: O(n).
-        n is the time point that this chunk have.
+    #     Time complexity: O(n).
+    #     n is the time point that this chunk have.
 
-        Args:
-            pos (ChunkPos): The chunk position of the target chunk.
-            dm (Dimension, optional): The dimension of the target chunk.
-                                      Defaults to DIMENSION_OVERWORLD.
+    #     Args:
+    #         pos (ChunkPos): The chunk position of the target chunk.
+    #         dm (Dimension, optional): The dimension of the target chunk.
+    #                                   Defaults to DIMENSION_OVERWORLD.
 
-        Raises:
-            Exception: When failed to delete target timeline.
-        """
-        err = tldb_delete_chunk_timeline(self._database_id, int(dm), pos.x, pos.z)
-        if len(err) > 0:
-            raise Exception(err)
+    #     Raises:
+    #         Exception: When failed to delete target timeline.
+    #     """
+    #     err = tldb_delete_chunk_timeline(self._database_id, int(dm), pos.x, pos.z)
+    #     if len(err) > 0:
+    #         raise Exception(err)
 
-    def load_latest_time_point_unix_time(
-        self, pos: ChunkPos, dm: Dimension = DIMENSION_OVERWORLD
-    ):
-        """
-        load_latest_time_point_unix_time loads
-        the time when latest time point update.
+    # def load_latest_time_point_unix_time(
+    #     self, pos: ChunkPos, dm: Dimension = DIMENSION_OVERWORLD
+    # ):
+    #     """
+    #     load_latest_time_point_unix_time loads
+    #     the time when latest time point update.
 
-        If not exist, then return 0.
+    #     If not exist, then return 0.
 
-        Args:
-            pos (ChunkPos): The chunk position of the target chunk.
-            dm (Dimension, optional): The dimension of the target chunk.
-                                      Defaults to DIMENSION_OVERWORLD.
+    #     Args:
+    #         pos (ChunkPos): The chunk position of the target chunk.
+    #         dm (Dimension, optional): The dimension of the target chunk.
+    #                                   Defaults to DIMENSION_OVERWORLD.
 
-        Returns:
-            int: The unix time of the latest time point.
-                 Return 0 for not exist or current timeline database is not exist.
-        """
-        result = tldb_load_latest_time_point_unix_time(
-            self._database_id, int(dm), pos.x, pos.z
-        )
-        if result == -1:
-            return 0
-        return result
+    #     Returns:
+    #         int: The unix time of the latest time point.
+    #              Return 0 for not exist or current timeline database is not exist.
+    #     """
+    #     result = tldb_load_latest_time_point_unix_time(
+    #         self._database_id, int(dm), pos.x, pos.z
+    #     )
+    #     if result == -1:
+    #         return 0
+    #     return result
 
-    def save_latest_time_point_unix_time(
-        self, pos: ChunkPos, time_stamp: int, dm: Dimension = DIMENSION_OVERWORLD
-    ):
-        """
-        save_latest_time_point_unix_timesaves the time
-        when the latest time point is generated.
+    # def save_latest_time_point_unix_time(
+    #     self, pos: ChunkPos, time_stamp: int, dm: Dimension = DIMENSION_OVERWORLD
+    # ):
+    #     """
+    #     save_latest_time_point_unix_timesaves the time
+    #     when the latest time point is generated.
 
-        If timeStamp is 0, then delete the time from the database.
+    #     If timeStamp is 0, then delete the time from the database.
 
-        Args:
-            pos (ChunkPos): The chunk position of the target chunk.
-            time_stamp (int): The unix time to update.
-            dm (Dimension, optional): The dimension of the target chunk.
-                                      Defaults to DIMENSION_OVERWORLD.
+    #     Args:
+    #         pos (ChunkPos): The chunk position of the target chunk.
+    #         time_stamp (int): The unix time to update.
+    #         dm (Dimension, optional): The dimension of the target chunk.
+    #                                   Defaults to DIMENSION_OVERWORLD.
 
-        Raises:
-            Exception: When failed to update the unix time.
-        """
-        err = tldb_save_latest_time_point_unix_time(
-            self._database_id, int(dm), pos.x, pos.z, time_stamp
-        )
-        if len(err) > 0:
-            raise Exception(err)
+    #     Raises:
+    #         Exception: When failed to update the unix time.
+    #     """
+    #     err = tldb_save_latest_time_point_unix_time(
+    #         self._database_id, int(dm), pos.x, pos.z, time_stamp
+    #     )
+    #     if len(err) > 0:
+    #         raise Exception(err)
 
 
 def new_timeline_database(
