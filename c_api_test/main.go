@@ -4,6 +4,7 @@ import "C"
 import (
 	"fmt"
 
+	"github.com/TriM-Organization/bedrock-chunk-diff/timeline"
 	"go.etcd.io/bbolt"
 )
 
@@ -21,6 +22,20 @@ func DO() {
 		return
 	}
 	err = db.Close()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+}
+
+//export DO2
+func DO2() {
+	db, err := timeline.Open("ss", false, false)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	err = db.CloseTimelineDB()
 	if err != nil {
 		fmt.Println(err)
 		return
